@@ -1,4 +1,4 @@
 Nhóm 2
-Trần Nguyễn Phương Anh
-Nguyễn Thanh Sơn
-Hồ Vủ Minh Tài
+Trần Nguyễn Phương Anh : vai trò frontend
+Nguyễn Thanh Sơn : vai trò backend
+Hồ Vủ Minh Tài : database
