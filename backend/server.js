@@ -7,6 +7,10 @@ require("dotenv").config({ path: path.join(__dirname, ".env") });
 // Middlewares
 app.use(express.json());
 
+const userRoutes = require("./routes/user");
+app.use("/users", userRoutes);   // => /users
+
+
 // Healthcheck cho dễ test
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", time: new Date().toISOString() });
