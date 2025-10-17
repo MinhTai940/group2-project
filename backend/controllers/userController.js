@@ -1,34 +1,43 @@
 // controllers/userController.js
+const User = require('../models/User');
 
-// mảng tạm lưu user
-let users = [
-  // ví dụ mẫu
-  //{ id: 1697040000000, name: "Nguyen Van A", email: "a@example.com" }
-];
-
-exports.getUsers = (req, res) => {
-  res.json(users);
+// GET /users
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find().lean(); // trả object thuần, nhẹ hơn
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi lấy danh sách người dùng', error: err.message });
+  }
 };
 
-exports.createUser = (req, res) => {
-  const { name, email } = req.body;
+// POST /users
+exports.createUser = async (req, res) => {
+  try {
+    let { name, email } = req.body;
 
-  // validation cơ bản
-  if (!name || !email) {
-    return res.status(400).json({ message: "Name và email là bắt buộc" });
+    // validation cơ bản
+    if (!name || !email) {
+      return res.status(400).json({ message: 'Name và email là bắt buộc' });
+    }
+    name = String(name).trim();
+    email = String(email).trim();
+
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ message: 'Email không hợp lệ' });
+    }
+
+    // kiểm tra trùng email
+    const existed = await User.findOne({ email });
+    if (existed) {
+      return res.status(409).json({ message: 'Email đã tồn tại' });
+    }
+
+    // tạo user trong MongoDB
+    const user = await User.create({ name, email });
+    return res.status(201).json(user);
+  } catch (err) {
+    res.status(500).json({ message: 'Lỗi tạo người dùng', error: err.message });
   }
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    return res.status(400).json({ message: "Email không hợp lệ" });
-  }
-
-  // tạo id đơn giản (timestamp)
-  const newUser = {
-    id: Date.now(),
-    name: name.trim(),
-    email: email.trim()
-  };
-
-  users.push(newUser);
-
-  return res.status(201).json(newUser);
 };

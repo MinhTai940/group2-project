@@ -3,7 +3,9 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-router.get('/users', userController.getUsers);
-router.post('/users', userController.createUser);
+// 🧠 Không cần thêm /users ở đây nữa,
+// vì trong app.js bạn đã dùng app.use('/users', userRoutes)
+router.get('/', userController.getUsers);
+router.post('/', userController.createUser);
 
 module.exports = router;
