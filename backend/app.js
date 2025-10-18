@@ -24,4 +24,4 @@ const userRoutes = require('./routes/user');
 app.use('/', userRoutes);
 
 module.exports = app;
-console.log("Code từ frontend");
+
