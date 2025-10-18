@@ -8,3 +8,4 @@ app.use(cors());
 app.use('/api', userRoutes);
 
 module.exports = app;
+console.log("Code từ backend");
