@@ -1,11 +1,10 @@
-// routes/user.js
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-// 🧠 Không cần thêm /users ở đây nữa,
-// vì trong app.js bạn đã dùng app.use('/users', userRoutes)
-router.get('/', userController.getUsers);
-router.post('/', userController.createUser);
+router.get('/users', userController.getUsers);
+router.post('/users', userController.createUser);
+router.put('/users/:id', userController.updateUser);   // PUT
+router.delete('/users/:id', userController.deleteUser); // DELETE
 
 module.exports = router;

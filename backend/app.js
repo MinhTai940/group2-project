@@ -1,9 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, 'server.env') });
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 if (!process.env.MONGO_URI) {
@@ -19,6 +21,6 @@ mongoose.connect(process.env.MONGO_URI)
   });
 
 const userRoutes = require('./routes/user');
-app.use('/users', userRoutes);
+app.use('/', userRoutes);
 
 module.exports = app;
