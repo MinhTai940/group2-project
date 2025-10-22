@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useUser } from '../contexts/UserContext';
 
 export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
-  const { clearError } = useUser();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState({});
@@ -17,13 +15,12 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
       setEmail('');
     }
     setErrors({});
-    clearError(); // Clear any previous errors when switching modes
-  }, [editUser, clearError]);
+  }, [editUser]);
 
   const validateForm = () => {
     const newErrors = {};
     
-    // Validation cho name
+    // Validation cho name theo yêu cầu bài tập
     if (!name.trim()) {
       newErrors.name = 'Name không được để trống';
     } else if (name.trim().length < 2) {
@@ -32,7 +29,7 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
       newErrors.name = 'Name không được quá 50 ký tự';
     }
 
-    // Validation cho email
+    // Validation cho email theo yêu cầu bài tập
     if (!email.trim()) {
       newErrors.email = 'Email không được để trống';
     } else if (!/\S+@\S+\.\S+/.test(email)) {
@@ -48,7 +45,13 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateForm()) {
+    // Validation theo yêu cầu bài tập
+    if (!name.trim()) {
+      alert("Name không được để trống");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("Email không hợp lệ");
       return;
     }
 
@@ -95,17 +98,10 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
       padding: '20px', 
       borderRadius: '8px',
       backgroundColor: '#f9f9f9',
-      marginBottom: '20px',
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+      marginBottom: '20px'
     }}>
-      <h2 style={{ 
-        marginTop: 0, 
-        color: '#333',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px'
-      }}>
-        {editUser ? '✏️ Sửa User' : '➕ Thêm User'}
+      <h2 style={{ marginTop: 0, color: '#333' }}>
+        {editUser ? 'Sửa User' : 'Thêm User'}
       </h2>
       
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
@@ -124,8 +120,7 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
               border: errors.name ? '2px solid #f44336' : '1px solid #ccc',
               borderRadius: '4px',
               fontSize: '14px',
-              backgroundColor: loading || isSubmitting ? '#f5f5f5' : 'white',
-              transition: 'border-color 0.3s ease'
+              backgroundColor: loading || isSubmitting ? '#f5f5f5' : 'white'
             }}
             placeholder="Nhập tên người dùng"
           />
@@ -151,8 +146,7 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
               border: errors.email ? '2px solid #f44336' : '1px solid #ccc',
               borderRadius: '4px',
               fontSize: '14px',
-              backgroundColor: loading || isSubmitting ? '#f5f5f5' : 'white',
-              transition: 'border-color 0.3s ease'
+              backgroundColor: loading || isSubmitting ? '#f5f5f5' : 'white'
             }}
             placeholder="Nhập email người dùng"
           />
@@ -176,11 +170,10 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
               cursor: loading || isSubmitting ? 'not-allowed' : 'pointer',
               fontSize: '14px',
               fontWeight: 'bold',
-              opacity: loading || isSubmitting ? 0.6 : 1,
-              transition: 'opacity 0.3s ease'
+              opacity: loading || isSubmitting ? 0.6 : 1
             }}
           >
-            {isSubmitting ? '⏳ Đang xử lý...' : (editUser ? '🔄 Cập nhật' : '✅ Thêm')}
+            {isSubmitting ? 'Đang xử lý...' : (editUser ? 'Cập nhật' : 'Thêm')}
           </button>
           
           {editUser && (
@@ -197,11 +190,10 @@ export default function AddUser({ onCreate, editUser, onCancelEdit, loading }) {
                 cursor: loading || isSubmitting ? 'not-allowed' : 'pointer',
                 fontSize: '14px',
                 fontWeight: 'bold',
-                opacity: loading || isSubmitting ? 0.6 : 1,
-                transition: 'opacity 0.3s ease'
+                opacity: loading || isSubmitting ? 0.6 : 1
               }}
             >
-              ❌ Hủy
+              Hủy
             </button>
           )}
         </div>
