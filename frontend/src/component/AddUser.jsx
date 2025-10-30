@@ -22,7 +22,7 @@ function AddUser({ onUserAdded }) {
     }
 
     try {
-      await axios.post("http://localhost:3000/api/users", { 
+      await axios.post("/api/users", { 
         name: name.trim(), 
         email: email.trim() 
       });

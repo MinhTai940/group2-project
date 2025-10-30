@@ -20,7 +20,7 @@ const ProfilePage = () => {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/profile', {
+      const response = await axios.get('/api/profile', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -62,7 +62,7 @@ const ProfilePage = () => {
     setMessage('');
 
     try {
-      const response = await axios.put('http://localhost:3000/api/profile', formData, {
+      const response = await axios.put('/api/profile', formData, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

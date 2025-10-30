@@ -15,7 +15,7 @@ function UserList() {
   // Lấy danh sách user khi component load
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/users", {
+      const res = await axios.get("/api/users", {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       setUsers(res.data);
@@ -43,7 +43,7 @@ function UserList() {
     }
 
     try {
-      const response = await axios.delete(`http://localhost:3000/api/users/${id}`, {
+      const response = await axios.delete(`/api/users/${id}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
       if (response.data) {
@@ -86,7 +86,7 @@ function UserList() {
     
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/users/${editingUser.id}`,
+        `/api/users/${editingUser.id}`,
         formData
       );
       

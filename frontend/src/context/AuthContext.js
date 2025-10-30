@@ -16,6 +16,11 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
+  // Base URL from env (fallback to local)
+  useEffect(() => {
+    axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+  }, []);
+
   // Cấu hình axios để tự động thêm token vào header
   useEffect(() => {
     if (token) {
@@ -27,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/login', {
+      const response = await axios.post('/api/auth/login', {
         email,
         password
       });
@@ -49,7 +54,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, email, password, role = 'user') => {
     try {
-      const response = await axios.post('http://localhost:3000/api/auth/signup', {
+      const response = await axios.post('/api/auth/signup', {
         name,
         email,
         password,
@@ -73,7 +78,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:3000/api/auth/logout');
+      await axios.post('/api/auth/logout');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
@@ -100,6 +105,9 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+
+
 
 
 
